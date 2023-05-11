@@ -4,6 +4,7 @@ from typing import Type
 from batchgenerators.utilities.file_and_folder_operations import join
 
 import nnunetv2
+from nnunetv2.imageio.mzz_reader_writer import MzzIO
 from nnunetv2.imageio.natural_image_reager_writer import NaturalImage2DIO
 from nnunetv2.imageio.nibabel_reader_writer import NibabelIO, NibabelIOWithReorient
 from nnunetv2.imageio.simpleitk_reader_writer import SimpleITKIO
@@ -16,7 +17,8 @@ LIST_OF_IO_CLASSES = [
     SimpleITKIO,
     Tiff3DIO,
     NibabelIO,
-    NibabelIOWithReorient
+    NibabelIOWithReorient,
+    MzzIO
 ]
 
 
