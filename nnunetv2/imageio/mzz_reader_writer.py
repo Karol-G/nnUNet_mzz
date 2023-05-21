@@ -32,7 +32,8 @@ class MzzIO(BaseReaderWriter):
         print("Read")
         images = []
         for f in image_fnames:
-            spacing = (999, 1, 1)
+            # spacing = (999, 1, 1)
+            spacing = (1, 1, 1)
             img_mzz = mzz.Mzz(path=f)
             attributes = img_mzz.attrs()
             img = img_mzz.numpy()
@@ -58,10 +59,12 @@ class MzzIO(BaseReaderWriter):
         seg_mzz = mzz.Mzz(path=seg_fname)
         attributes = seg_mzz.attrs()
         seg = seg_mzz.numpy()
+        seg = seg.astype(np.int)
         if attributes["num_spatial"] == 2:
             seg = seg[np.newaxis, ...]
         seg = seg[np.newaxis, ...]  # Add 1 channel dim
-        properties = {'spacing': (999, 1, 1)}
+        # properties = {'spacing': (999, 1, 1)}
+        properties = {'spacing': (1, 1, 1)}
         return seg, properties
 
     def write_seg(self, seg: np.ndarray, output_fname: str, properties: dict) -> None:
@@ -73,8 +76,8 @@ class MzzIO(BaseReaderWriter):
 
 
 if __name__ == '__main__':
-    images = ("/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/imagesTr/CA0001_insulin_000023_0000.mzz", )
-    segmentation = "/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/labelsTr/CA0001_insulin_000023.mzz"
+    images = ("/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/imagesTr/001_0000.mzz", )
+    segmentation = "/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/labelsTr/001.mzz"
     imgio = MzzIO()
     img, props = imgio.read_images(images)
     seg, segprops = imgio.read_seg(segmentation)
