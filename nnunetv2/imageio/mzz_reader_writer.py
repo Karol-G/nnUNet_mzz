@@ -59,7 +59,7 @@ class MzzIO(BaseReaderWriter):
         seg_mzz = mzz.Mzz(path=seg_fname)
         attributes = seg_mzz.attrs()
         seg = seg_mzz.numpy()
-        seg = seg.astype(np.int)
+        seg = seg.astype(np.int32)
         if attributes["num_spatial"] == 2:
             seg = seg[np.newaxis, ...]
         seg = seg[np.newaxis, ...]  # Add 1 channel dim
