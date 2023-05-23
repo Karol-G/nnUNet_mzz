@@ -16,7 +16,7 @@
 from typing import Tuple, Union, List
 import numpy as np
 from nnunetv2.imageio.base_reader_writer import BaseReaderWriter
-import mzz
+from nnunetv2.imageio import mzz
 
 
 class MzzIO(BaseReaderWriter):
