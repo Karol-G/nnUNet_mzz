@@ -16,26 +16,27 @@
 from typing import Tuple, Union, List
 import numpy as np
 from nnunetv2.imageio.base_reader_writer import BaseReaderWriter
-import mzz
+from mzarr import Mzarr
 
 
 class MzzIO(BaseReaderWriter):
     """
-    Reader and writer for Multi-resolution Zipped Zarr (MZZ) images.
+    Reader and writer for Multi-resolution Zarr (Mzarr) images.
     """
 
     supported_file_endings = [
-        '.mzz'
+        '.mzarr'
     ]
 
     def read_images(self, image_fnames: Union[List[str], Tuple[str, ...]]) -> Tuple[np.ndarray, dict]:
         print("Read")
         images = []
         for f in image_fnames:
-            spacing = (999, 1, 1)
-            img_mzz = mzz.Mzz(path=f)
-            attributes = img_mzz.attrs()
-            img = img_mzz.numpy()
+            # spacing = (999, 1, 1)
+            spacing = (1, 1, 1)
+            img_mzarr = Mzarr(f)
+            attributes = img_mzarr.attrs()
+            img = img_mzarr.numpy()
             if attributes["channel_axis"] is not None:
                 img = np.moveaxis(img, attributes["channel_axis"], 0)
             if attributes["channel_axis"] is None:
@@ -55,27 +56,29 @@ class MzzIO(BaseReaderWriter):
         return np.vstack(images).astype(np.float32), {'spacing': spacing}
 
     def read_seg(self, seg_fname: str) -> Tuple[np.ndarray, dict]:
-        seg_mzz = mzz.Mzz(path=seg_fname)
-        attributes = seg_mzz.attrs()
-        seg = seg_mzz.numpy()
+        seg_mzarr = Mzarr(seg_fname)
+        attributes = seg_mzarr.attrs()
+        seg = seg_mzarr.numpy()
+        seg = seg.astype(np.int32)
         if attributes["num_spatial"] == 2:
             seg = seg[np.newaxis, ...]
         seg = seg[np.newaxis, ...]  # Add 1 channel dim
-        properties = {'spacing': (999, 1, 1)}
+        # properties = {'spacing': (999, 1, 1)}
+        properties = {'spacing': (1, 1, 1)}
         return seg, properties
 
     def write_seg(self, seg: np.ndarray, output_fname: str, properties: dict) -> None:
         print("Write")
         seg = seg.squeeze()
-        print("Writing MZZ image {}...".format(output_fname))
+        print("Writing Mzarr image {}...".format(output_fname))
         mzz.Mzz(seg).save(output_fname, properties=properties, is_seg=True)
         print("Finished writing image {}".format(output_fname))
 
 
 if __name__ == '__main__':
-    images = ("/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/imagesTr/CA0001_insulin_000023_0000.mzz", )
-    segmentation = "/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/labelsTr/CA0001_insulin_000023.mzz"
-    imgio = MzzIO()
-    img, props = imgio.read_images(images)
-    seg, segprops = imgio.read_seg(segmentation)
-    imgio.write_seg(seg, "/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/tmp.mzz", {"spacing": (999, 1, 1)})
+    # images = ("/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/imagesTr/001_0000.mzz", )
+    # segmentation = "/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/labelsTr/001.mzz"
+    # imgio = MzzIO()
+    # img, props = imgio.read_images(images)
+    # seg, segprops = imgio.read_seg(segmentation)
+    # imgio.write_seg(seg, "/home/k539i/Documents/datasets/original/HMGU_2022_DIADEM/dataset_patches/Dataset107_DIADEMv3/tmp.mzz", {"spacing": (999, 1, 1)})

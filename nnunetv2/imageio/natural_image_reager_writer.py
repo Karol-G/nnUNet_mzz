@@ -66,7 +66,7 @@ class NaturalImage2DIO(BaseReaderWriter):
 
 
 if __name__ == '__main__':
-    images = ('/media/fabian/data/nnUNet_raw/Dataset120_RoadSegmentation/imagesTr/img-11_0000.png',)
+    images = ('/home/k539i/Documents/datasets/original/HZDR_2022_Solar_Hydrogen/cropped_1.png',)
     segmentation = '/media/fabian/data/nnUNet_raw/Dataset120_RoadSegmentation/labelsTr/img-11.png'
     imgio = NaturalImage2DIO()
     img, props = imgio.read_images(images)
