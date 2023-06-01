@@ -76,6 +76,7 @@ class MzarrIO(BaseReaderWriter):
 
 
 if __name__ == '__main__':
+    pass
     # images = ("/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/imagesTr/001_0000.mzz", )
     # segmentation = "/home/k539i/Documents/datasets/preprocessed/nnUNet/nnUNet_raw_data/nnUNet_raw_data/Dataset301_vesuvius/labelsTr/001.mzz"
     # imgio = MzzIO()
