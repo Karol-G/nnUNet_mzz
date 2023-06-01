@@ -19,7 +19,7 @@ from nnunetv2.imageio.base_reader_writer import BaseReaderWriter
 from mzarr import Mzarr
 
 
-class MzzIO(BaseReaderWriter):
+class MzarrIO(BaseReaderWriter):
     """
     Reader and writer for Multi-resolution Zarr (Mzarr) images.
     """
