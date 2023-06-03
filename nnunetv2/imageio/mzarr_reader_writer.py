@@ -59,7 +59,7 @@ class MzarrIO(BaseReaderWriter):
         seg_mzarr = Mzarr(seg_fname)
         attributes = seg_mzarr.attrs()
         seg = seg_mzarr.numpy()
-        seg = seg.astype(np.int32)
+        # seg = seg.astype(np.int32)
         if attributes["num_spatial"] == 2:
             seg = seg[np.newaxis, ...]
         seg = seg[np.newaxis, ...]  # Add 1 channel dim
@@ -71,7 +71,7 @@ class MzarrIO(BaseReaderWriter):
         print("Write")
         seg = seg.squeeze()
         print("Writing Mzarr image {}...".format(output_fname))
-        mzz.Mzz(seg).save(output_fname, properties=properties, is_seg=True)
+        Mzarr(seg).save(output_fname, properties=properties, is_seg=True)
         print("Finished writing image {}".format(output_fname))
 
 
